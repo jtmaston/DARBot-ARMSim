@@ -1,4 +1,8 @@
 PShape base, segment, small, joint;
+
+PShape point;
+
+
 float rotX, rotY;
 float posX=1, posY=50, posZ=50;
 float alpha, beta, gamma;
@@ -22,19 +26,27 @@ float add3 = 0;
 float add4 = 0;
 float add5 = 0;
 
+
+int target_x = 150;
+int target_y = 200;
+int target_z = 0;
+
 void setup(){
-    size(1900, 1000, OPENGL);
+    size(1900, 1000, P3D);
     
     base = loadShape("r5.obj");
     segment = loadShape("r2.obj");
     small = loadShape("r2.obj");
     joint = createShape(SPHERE, 10);
+    point = createShape(SPHERE, 10);
+    
     
     segment.disableStyle();
     joint.disableStyle();
 }
 
 void draw(){ 
+   
    //writePos();
    background(32);
    shapeMode(CORNER);
@@ -49,8 +61,9 @@ void draw(){
    rotateX(rotX);
    rotateY(rotY);
    
+   pushMatrix();
    scale(-6.0);
-  
+   
    translate(75, 75, 0);
    rotateX(PI);
    shape(base);
@@ -111,7 +124,35 @@ void draw(){
    scale(0.7, 1, 0.9);
    shape(segment);
    
+   scale(10 / 7, 1, 9 / 10);
   
+    popMatrix();
+   
+    pushMatrix();
+    translate(-450, 0, 0);
+    rotateX(PI / 2);
+    
+    stroke(192,0,0);
+    line(-7500,0,0,15000,0,0);
+    //Y - green
+    stroke(0,192,0);
+    line(0,-7500,0,0,15000,0);
+    //Z - blue
+    stroke(0,0,192);
+    line(0,0,-7500,0,0,15000);
+    popMatrix();
+    
+    pushMatrix();
+    rotateX(PI / 2);
+    //rectMode(CENTER);
+    stroke(192,0,0);
+    
+    //line(-30,0,0,60,0,0);
+    //line(0,-30,0,60,0,0);
+    
+    ellipse(target_x, target_y, 60 ,60);
+    
+    popMatrix();
 }
 
 void keyPressed() {
