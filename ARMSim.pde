@@ -1,5 +1,3 @@
-PShape base, segment, small, joint;
-
 PShape target;
 Point tgt = new Point(325, 200, 0);
 
@@ -9,7 +7,7 @@ float rotX, rotY;
 float posX=1, posY=50, posZ=50;
 float alpha, beta, gamma;
 
-int zoom = - 300;
+int zoom = 10;
 
 float deg = 0.174533;
 int i = 0;
@@ -17,46 +15,23 @@ boolean start = false;
 
 void setup(){
     size(1900, 1000, P3D);
-
-    base = loadShape("r5.obj");
-    segment = loadShape("r2.obj");
-    small = loadShape("r2.obj");
-    joint = createShape(SPHERE, 10);
-    target = createShape(SPHERE, 10);
-
-    Bot.calculate(tgt);
     
+    Bot.load();
+    Bot.calculate(tgt);
     frameRate(60);
-
-    segment.disableStyle();
-    joint.disableStyle();
 }
 
 long frame = 0;
 
 void draw(){ 
     frame++;
+    sceneInit();                                    // intializes the scene
+    sceneRotate();                                  // rotates to apply mouse movements
+    axes();                                         // draws the axes
+    
+    Bot.draw();
 
-    background(32);
-    shapeMode(CORNER);
-    smooth();
-    lights(); 
-    directionalLight(51, 102, 126, -1, 0, 0);
-   
-    fill(#FFE308); 
-    noStroke();
-  
-    // DRAW THE ROBOT ARM \\
-  
-    translate(width / 2,height / 2, zoom);
-    //translate(0, height/2, zoom);
-    rotateX(rotX);
-    rotateY(rotY);
-   
-    pushMatrix();
-    scale(-6.0);
-   
-    translate(0, 75, 0);
+    /*translate(0, 75, 0);
     rotateX(PI);
     shape(base);
     
@@ -129,22 +104,7 @@ void draw(){
     
     popMatrix();
     
-    
-    // DRAW THE AXES \\
-    
-    pushMatrix();
-    //translate(-450, 0, 0);
-    rotateX(PI / 2);
-        
-    stroke(192,0,0);
-    line(-7500,0,0,15000,0,0);
-
-    stroke(0,192,0);
-    line(0,-7500,0,0,15000,0);
-
-    stroke(0,0,192);
-    line(0,0,-7500,0,0,15000);
-    popMatrix();
+    */
         
         
     // DRAW THE TARGET \\ 
@@ -161,6 +121,29 @@ void draw(){
 
 void keyPressed() {
     start = true;
+    switch (keyCode) {
+        case 52:
+            rotX = 0;
+            rotY = PI / 2;
+            break;
+        case 54:
+            rotX = 0;
+            rotY = -PI / 2;
+            break;
+        case 56:
+            rotX = PI / 2;
+            rotY = 0;
+            break;
+        case 50:
+            rotX = -PI / 2;
+            rotY = 0;
+            break;
+        case 53:
+            rotX = -PI / 6;
+            rotY = -PI / 4;
+            break;
+        
+    }
 }
 
 void mouseWheel(MouseEvent event)
@@ -169,7 +152,6 @@ void mouseWheel(MouseEvent event)
 }
 
 void mouseDragged(){
-    rotY -= (mouseX - pmouseX) * 0.01;
-    rotX -= (mouseY - pmouseY) * 0.01;
-    
+    rotY += (mouseX - pmouseX) * 0.01;
+    rotX += (mouseY - pmouseY) * 0.01;
 }

@@ -1,32 +1,72 @@
 class ARM
 {
-    // angles for all the axes, relative to the coordinate system
-    float angle_1 = 0;                    float target_1 = 0;
-    float angle_2 = 0;                    float target_2 = 0;
-    float angle_3 = 0;                    float target_3 = 0;
-    float angle_4 = 0;                    float target_4 = 0;
-    float angle_5 = 0;                    float target_5 = 0;
-    float angle_6 = 0;                    float target_6 = 0;
-    
-    // lengths of each segment
-    int l1;
-    int l2;
-    int l3;
-    int l4;
-    int l5;
-    int l6;
+    float  angles[]   = new float[6];
+    float  targets[]  = new float[6];
+    float  lengths[]  = new float[6];
+    PShape segments[] = new PShape[10];
+    boolean debugMode     = false;
+
+    int segnum = 0;
+    float rscale = 1;
+
+    float height;
+
+    void debug()
+    {
+        debugMode = true;
+    }
+
+    void load()
+    {
+        segments[0] = loadShape("mount.obj");
+        segments[1] = loadShape("base.obj");
+        //segments[2] = loadShape("seg1.obj");
+        /*segments[3] = loadShape("Production/seg2.obj");
+        segments[4] = loadShape("Production/seg3.obj");
+        segments[5] = loadShape("Production/seg4.obj");
+        segments[6] = loadShape("Production/seg5.obj");
+        segments[7] = loadShape("Production/seg6.obj");
+        segments[8] = loadShape("Production/seg7.obj");*/
+
+        println(segments.length);
+        for(int i = 0 ; i < 2; i++){
+            print(segments[i].width);print(" ");println(segments[i].height);
+            segments[0].disableStyle();
+        }
+    }
+
+
+    void draw()
+    {
+        pushMatrix();
+        scale(rscale);
+
+         for(int i = 0 ; i < 2; i++){
+            print(segments[i].width);print(" ");println(segments[i].height);
+            segments[0].disableStyle();
+        }
+
+        translate(segments[0].width / 2, 0, 0);
+        shape(segments[0]);
+        shape(segments[1]);
+        
+       
+
+        //shape(segments[2]);
+
+        popMatrix();
+    }
 
     void calculate(int x, int y, int z)
     {
-        target_1 = asin(radians(z / (x * x + z * z)));
+        targets[0] = asin(radians(z / (x * x + z * z)));
     }
 
     void calculate(Point target)
     {
         //print(target.x);print(" ");print(target.y);print(" ");println(target.z);
-        this.target_1 = floor(degrees(atan(target.z / target.x)));
+        this.targets[0] = floor(degrees(atan(target.z / target.x)));
 
-        println(this.target_1);
         //println(this.target_1);
     }
 };
@@ -41,6 +81,6 @@ class Point
     void display()
     {
         ellipseMode(CENTER);
-        ellipse(x, z, 10 ,10);
+        ellipse(x, z, 30 ,30);
     }
 }
