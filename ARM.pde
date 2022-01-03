@@ -6,10 +6,19 @@ class ARM
     PShape segments[] = new PShape[10];
     boolean debugMode     = false;
 
+    int x = 0, y = -70, z = 0;
+
     int segnum = 0;
     float rscale = 6;
 
     float height;
+
+    void move(int tgtx, int tgty, int tgtz)
+    {
+        x = tgtx;
+        y = tgty;
+        z = tgtz;
+    }
 
     void debug()
     {
@@ -35,7 +44,7 @@ class ARM
 
         scale(rscale); 
 
-        translate(0, -70, 0);
+        translate(x, y, z);
 
         shape(segments[0]);
         translate(0, -2, 0);
